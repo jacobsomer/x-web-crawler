@@ -19,6 +19,7 @@ from autofollow.agent import AutoFollowAgent
 
 def main():
     driver_path = "YOUR_DRIVER_PATH"
+    profile_path = "YOUR_PROFILE_PATH"
     twitter_username = "YOUR_TWITTER_USERNAME"
     twitter_password = "YOUR_TWITTER_PASSWORD"
     github_username = "YOUR_GITHUB_USERNAME"
@@ -27,6 +28,7 @@ def main():
 
     agent = AutoFollowAgent(
         driver_path=driver_path,
+        profile_path=profile_path,
         twitter_username=twitter_username,
         twitter_password=twitter_password,
         github_username=github_username,
@@ -45,6 +47,15 @@ if __name__ == "__main__":
 ```
 
 ### AutoFollowAgent Methods
+
+#### `__init__(self, driver_path, profile_path, github_username=None, github_password=None)`
+
+Initializes the AutoFollowAgent.
+
+- `driver_path`: Path to the ChromeDriver executable. Download ChromeDriver from [here](https://googlechromelabs.github.io/chrome-for-testing/).
+- `profile_path`: Path to the user profile directory for Chrome. To find this, type "chrome://version" into your Chrome browser's address bar, and look for the "Profile Path" variable.
+- `github_username` (optional): GitHub username for authentication.
+- `github_password` (optional): GitHub password for authentication.
 
 #### `like_tweets(duration=300)`
 
