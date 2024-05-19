@@ -5,10 +5,9 @@ from .x import XAgent
 from . import github
 
 class AutoFollowAgent:
-    def __init__(self, driver_path, profile_path, binary_location=None, github_username=None, github_password=None):
+    def __init__(self, driver_path, profile_path, github_username=None, github_password=None):
         self.driver_path = driver_path
         self.profile_path = profile_path
-        self.binary_location = binary_location
         self.github_username = github_username
         self.github_password = github_password
         self.driver = self.create_driver()
@@ -16,8 +15,6 @@ class AutoFollowAgent:
 
     def create_driver(self):
         chrome_options = webdriver.ChromeOptions()
-        if self.binary_location:
-            chrome_options.binary_location = self.binary_location
         if self.profile_path:
             chrome_options.add_argument(f"user-data-dir={self.profile_path}")
         chrome_options.add_argument("disable-infobars")
