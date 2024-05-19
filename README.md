@@ -1,10 +1,10 @@
-# AutoFollow
+# autofollow
 
-AutoFollow is a Python package for automating interactions on social media platforms like Twitter (X) and GitHub.
+autofollow is a Python package for automating interactions on social media platforms like Twitter (X) and GitHub.
 
 ## Installation
 
-You can install AutoFollow using pip:
+You can install autofollow using pip:
 
 ```bash
 pip install autofollow
@@ -12,10 +12,10 @@ pip install autofollow
 
 ## Usage
 
-Here’s an example of how to use AutoFollow to automate actions on Twitter (X) and GitHub:
+Here’s an example of how to use autofollow to automate actions on Twitter (X) and GitHub:
 
 ```python
-from autofollow.agent import AutoFollowAgent
+from autofollow.agent import autofollowAgent
 
 def main():
     driver_path = "YOUR_DRIVER_PATH"
@@ -26,7 +26,7 @@ def main():
     github_password = "YOUR_GITHUB_PASSWORD"
     url = "https://github.com/orgs/Azure/people"
 
-    agent = AutoFollowAgent(
+    agent = autofollowAgent(
         driver_path=driver_path,
         profile_path=profile_path,
         twitter_username=twitter_username,
@@ -46,11 +46,11 @@ if __name__ == "__main__":
     main()
 ```
 
-### AutoFollowAgent Methods
+### autofollowAgent Methods
 
 #### `__init__(self, driver_path, profile_path, github_username=None, github_password=None)`
 
-Initializes the AutoFollowAgent.
+Initializes the autofollowAgent.
 
 - `driver_path`: Path to the ChromeDriver executable. Download ChromeDriver from [here](https://googlechromelabs.github.io/chrome-for-testing/).
 - `profile_path`: Path to the user profile directory for Chrome. To find this, type "chrome://version" into your Chrome browser's address bar, and look for the "Profile Path" variable.
