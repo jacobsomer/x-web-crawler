@@ -35,7 +35,7 @@ def main():
 
     try:
         agent.like_tweets(duration=300)
-        agent.follow_twitter_users(["https://x.com/minimario1729"], duration=300)
+        agent.follow_twitter_users(["https://x.com/jacob_somer_"], duration=300)
         agent.follow_github_users(url, page_number=0, duration=300)
     finally:
         agent.close()
