@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: autofollow
+Version: 0.1.0
+Summary: A package for automating interactions on social media platforms like x and GitHub
+Home-page: https://github.com/jacobsomer/autofollow
+Author: Jacob Somer
+Author-email: somerjacob@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: selenium
+
+autofollow/
+├── autofollow/
+│ ├── **init**.py
+│ ├── agent.py
+│ ├── twitter.py
+│ ├── github.py
+│ └── common.py
+├── tests/
+│ ├── **init**.py
+│ ├── test_twitter.py
+│ └── test_github.py
+├── setup.py
+├── README.md
+├── LICENSE
+└── requirements.txt

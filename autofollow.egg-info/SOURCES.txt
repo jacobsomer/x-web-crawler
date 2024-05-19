@@ -1,0 +1,15 @@
+LICENSE
+README.md
+setup.py
+autofollow/__init__.py
+autofollow/agent.py
+autofollow/common.py
+autofollow/github.py
+autofollow/x.py
+autofollow.egg-info/PKG-INFO
+autofollow.egg-info/SOURCES.txt
+autofollow.egg-info/dependency_links.txt
+autofollow.egg-info/entry_points.txt
+autofollow.egg-info/requires.txt
+autofollow.egg-info/top_level.txt
+tests/test_agent.py

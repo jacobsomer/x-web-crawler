@@ -1,0 +1,3 @@
+[console_scripts]
+github_automation = autofollow.github:main
+x_automation = autofollow.x:main
