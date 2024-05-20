@@ -2,6 +2,8 @@
 
 autofollow is a Python package for automating interactions on social media platforms like Twitter (X) and GitHub.
 
+https://pypi.org/project/autofollow/
+
 ## Installation
 
 You can install autofollow using pip:
