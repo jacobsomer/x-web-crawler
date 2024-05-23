@@ -5,33 +5,37 @@ from .x import XAgent
 from . import github
 
 class AutoFollowAgent:
-    def __init__(self, driver_path, profile_path, github_username=None, github_password=None):
+    def __init__(self, driver_path, profile_path, browser="chrome", github_username=None, github_password=None):
         self.driver_path = driver_path
         self.profile_path = profile_path
         self.github_username = github_username
         self.github_password = github_password
         self.driver = self.create_driver()
+        self.browser = browser
         self.x_agent = XAgent(self.driver)
 
-    def create_driver(self):
-        chrome_options = webdriver.ChromeOptions()
+    def set_common_options(self, options):
         if self.profile_path:
-            chrome_options.add_argument(f"user-data-dir={self.profile_path}")
-        chrome_options.add_argument("disable-infobars")
-        chrome_options.add_argument("--disable-extensions")
-        chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        chrome_options.add_experimental_option("prefs", {
+            options.add_argument(f"user-data-dir={self.profile_path}")
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option("prefs", {
             "credentials_enable_service": False,
             "profile.password_manager_enabled": False,
         })
-        chrome_options.add_argument("--remote-debugging-port=9222")
-        driver = webdriver.Chrome(self.driver_path, options=chrome_options)
-        return driver
+        return options
 
-    
+    def create_driver(self):
+        if self.browser == "chrome":
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options = self.set_common_options(chrome_options)
+            driver = webdriver.Chrome(self.driver_path, options=chrome_options)
+            return driver
+        elif self.browser == "edge":
+            edge_options = webdriver.EdgeOptions()
+            edge_options = self.set_common_options(edge_options)
+            edge_service = webdriver.EdgeService(executable_path=self.driver_path) 
+
+        
     """
     The like_tweets method will like tweets on the user's feed for a specified amount of time.
     """
