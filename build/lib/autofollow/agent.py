@@ -25,6 +25,8 @@ class AutoFollowAgent:
         options.add_argument("--disable-gpu") 
         options.add_argument("start-maximized") 
         options.add_argument("disable-infobars")
+    #   render half the screen size
+        options.add_argument(f"window-size={1920//2},1080")
         options.add_experimental_option("prefs", {
             "credentials_enable_service": False,
             "profile.password_manager_enabled": False,

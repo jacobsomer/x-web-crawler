@@ -35,13 +35,13 @@ class XAgent:
             print(f"Failed to like tweet: {e}")
             return False
 
-    def like_tweets_on_feed(self, driver, run_time=300):
-        driver.get("https://x.com/home")
+    def like_tweets_on_feed(self, run_time=300):
+        self.driver.get("https://x.com/home")
         start_time = time.time()
         while time.time() - start_time < run_time:
             time.sleep(2)
             try:
-                tweets = WebDriverWait(driver, 10).until(
+                tweets = WebDriverWait(self.driver, 10).until(
                     EC.visibility_of_all_elements_located((By.XPATH, "//article[@data-testid='tweet']"))
                 )
 
@@ -54,22 +54,22 @@ class XAgent:
                 print(f"Error during tweet processing: {e}")
 
             try:
-                driver.execute_script("window.scrollBy(0,1000)")
+                self.driver.execute_script("window.scrollBy(0,1000)")
             except Exception as e:
                 print(f"Failed to scroll: {e}")
             time.sleep(3)
             
 
-    def follow_users(self, driver, users, duration=300):
+    def follow_users(self, users, duration=300):
         start_time = time.time()
         for user in users:
             if time.time() - start_time > duration:
                 break
             user = user.replace("https://x.com/", "")
             user = user.replace("https://twitter.com/", "")
-            driver.get(f"https://x.com/{user}")
+            self.driver.get(f"https://x.com/{user}")
             try:
-                follow_button = WebDriverWait(driver, 10).until(
+                follow_button = WebDriverWait(self.driver, 10).until(
                     EC.element_to_be_clickable((By.XPATH, "//span[contains(text(), 'Follow')]"))
                 )
                 follow_button.click()
@@ -77,32 +77,32 @@ class XAgent:
             except Exception as e:
                 print(f"Error following user {user}: {e}")
     
-    def get_followers(self,driver, user):
-        driver.get(f"https://x.com/{user}")
+    def get_followers(self, user):
+        self.driver.get(f"https://x.com/{user}")
         time.sleep(2)
         try:
-            number_of_followers = driver.find_element(By.XPATH, f"//a[contains(@href, '/{user}/verified_followers')]").text.split()[0]
+            number_of_followers = self.driver.find_element(By.XPATH, f"//a[contains(@href, '/{user}/verified_followers')]").text.split()[0]
             print(f"Number of followers: {number_of_followers}")
         except Exception as e:
             print(f"Error retrieving following count: {e}")
             return []
-        driver.get(f"https://x.com/{user}/followers")
+        self.driver.get(f"https://x.com/{user}/followers")
         followers = []
-        last_height = driver.execute_script("return document.body.scrollHeight")
+        last_height = self.driver.execute_script("return document.body.scrollHeight")
 
         while True:
             try:
                 # Wait until follower elements are visible
-                current_followers = [elem.text for elem in WebDriverWait(driver, 10).until(
+                current_followers = [elem.text for elem in WebDriverWait(self.driver, 10).until(
                     EC.visibility_of_all_elements_located((By.XPATH, "//span[starts-with(text(), '@')]"))
                 )]
                 new_followers = [f for f in current_followers if f not in followers]
 
                 if not new_followers:
                     # Scroll down the page to load new followers
-                    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                    self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                     time.sleep(2)
-                    new_height = driver.execute_script("return document.body.scrollHeight")
+                    new_height = self.driver.execute_script("return document.body.scrollHeight")
                     if new_height == last_height:
                         print("Reached the end of the list or no new followers are loading.")
                         break
@@ -120,33 +120,33 @@ class XAgent:
         return followers
     
    
-    def get_following(self, driver, user):
-        driver.get(f"https://x.com/{user}")
+    def get_following(self, user):
+        self.driver.get(f"https://x.com/{user}")
         time.sleep(2)
         try:
-            number_of_following = driver.find_element(By.XPATH, f"//a[contains(@href, '/{user}/following')]").text.split()[0]
+            number_of_following = self.driver.find_element(By.XPATH, f"//a[contains(@href, '/{user}/following')]").text.split()[0]
             print(f"Number of following: {number_of_following}")
         except Exception as e:
             print(f"Error retrieving following count: {e}")
             return []
 
-        driver.get(f"https://x.com/{user}/following")
+        self.driver.get(f"https://x.com/{user}/following")
         following = []
-        last_height = driver.execute_script("return document.body.scrollHeight")
+        last_height = self.driver.execute_script("return document.body.scrollHeight")
 
         while True:
             try:
-                WebDriverWait(driver, 10).until(
+                WebDriverWait(self.driver, 10).until(
                     EC.visibility_of_all_elements_located((By.XPATH, "//span[starts-with(text(), '@')]"))
                 )
-                current_following = [elem.text for elem in driver.find_elements(By.XPATH, "//span[starts-with(text(), '@')]")]
+                current_following = [elem.text for elem in self.driver.find_elements(By.XPATH, "//span[starts-with(text(), '@')]")]
                 new_following = [f for f in current_following if f not in following]
 
                 if not new_following:
                     # Scroll down to the bottom of the page
-                    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                    self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                     time.sleep(2)
-                    new_height = driver.execute_script("return document.body.scrollHeight")
+                    new_height = self.driver.execute_script("return document.body.scrollHeight")
                     if new_height == last_height:
                         break
                     last_height = new_height
