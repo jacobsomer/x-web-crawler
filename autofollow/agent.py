@@ -10,14 +10,21 @@ class AutoFollowAgent:
         self.profile_path = profile_path
         self.github_username = github_username
         self.github_password = github_password
-        self.driver = self.create_driver()
         self.browser = browser
+        self.driver = self.create_driver()
         self.x_agent = XAgent(self.driver)
 
     def set_common_options(self, options):
         if self.profile_path:
             options.add_argument(f"user-data-dir={self.profile_path}")
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_argument("--remote-debugging-port=9222")
+        
+        options.add_argument("--disable-dev-shm-using") 
+        options.add_argument("--disable-extensions") 
+        options.add_argument("--disable-gpu") 
+        options.add_argument("start-maximized") 
+        options.add_argument("disable-infobars")
         options.add_experimental_option("prefs", {
             "credentials_enable_service": False,
             "profile.password_manager_enabled": False,
@@ -28,13 +35,14 @@ class AutoFollowAgent:
         if self.browser == "chrome":
             chrome_options = webdriver.ChromeOptions()
             chrome_options = self.set_common_options(chrome_options)
-            driver = webdriver.Chrome(self.driver_path, options=chrome_options)
+            driver = webdriver.Chrome(options=chrome_options)
             return driver
         elif self.browser == "edge":
             edge_options = webdriver.EdgeOptions()
             edge_options = self.set_common_options(edge_options)
             edge_service = webdriver.EdgeService(executable_path=self.driver_path) 
-
+            driver = webdriver.Edge(service=edge_service, options=edge_options)
+            return driver
         
     """
     The like_tweets method will like tweets on the user's feed for a specified amount of time.
@@ -42,8 +50,13 @@ class AutoFollowAgent:
     def like_tweets(self, duration=300):
         self.x_agent.like_tweets_on_feed(self.driver, duration)
         self.close()
+    
+    def get_x_followers(self, username):
+        return self.x_agent.get_followers(self.driver, username)
+    
+    def get_x_following(self, username):
+        return self.x_agent.get_following(self.driver, username)
         
-    ""
     def follow_github_users(self, url, page_number=0, duration=300):
         if not self.github_username or not self.github_password:
             raise ValueError("GitHub username and password must be provided to follow users.")

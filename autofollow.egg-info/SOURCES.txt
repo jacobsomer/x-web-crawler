@@ -12,4 +12,3 @@ autofollow.egg-info/dependency_links.txt
 autofollow.egg-info/entry_points.txt
 autofollow.egg-info/requires.txt
 autofollow.egg-info/top_level.txt
-tests/test_agent.py

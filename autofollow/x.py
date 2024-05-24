@@ -1,6 +1,7 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By # type: ignore
+from selenium.webdriver.support.ui import WebDriverWait # type: ignore
+from selenium.webdriver.support import expected_conditions as EC # type: ignore
+from selenium.common.exceptions import StaleElementReferenceException # type: ignore
 import time
 
 class XAgent:
@@ -75,4 +76,91 @@ class XAgent:
                 time.sleep(2)
             except Exception as e:
                 print(f"Error following user {user}: {e}")
-        
+    
+    def get_followers(self,driver, user):
+        driver.get(f"https://x.com/{user}")
+        time.sleep(2)
+        try:
+            number_of_followers = driver.find_element(By.XPATH, f"//a[contains(@href, '/{user}/verified_followers')]").text.split()[0]
+            print(f"Number of followers: {number_of_followers}")
+        except Exception as e:
+            print(f"Error retrieving following count: {e}")
+            return []
+        driver.get(f"https://x.com/{user}/followers")
+        followers = []
+        last_height = driver.execute_script("return document.body.scrollHeight")
+
+        while True:
+            try:
+                # Wait until follower elements are visible
+                current_followers = [elem.text for elem in WebDriverWait(driver, 10).until(
+                    EC.visibility_of_all_elements_located((By.XPATH, "//span[starts-with(text(), '@')]"))
+                )]
+                new_followers = [f for f in current_followers if f not in followers]
+
+                if not new_followers:
+                    # Scroll down the page to load new followers
+                    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                    time.sleep(2)
+                    new_height = driver.execute_script("return document.body.scrollHeight")
+                    if new_height == last_height:
+                        print("Reached the end of the list or no new followers are loading.")
+                        break
+                    last_height = new_height
+                else:
+                    followers.extend(new_followers)
+                    print(f"Added {len(new_followers)} new followers.")
+            except StaleElementReferenceException:
+                print("Encountered a stale element, retrying...")
+                time.sleep(1)
+            except Exception as e:
+                print(f"Error getting followers: {e}")
+                break
+
+        return followers
+    
+   
+    def get_following(self, driver, user):
+        driver.get(f"https://x.com/{user}")
+        time.sleep(2)
+        try:
+            number_of_following = driver.find_element(By.XPATH, f"//a[contains(@href, '/{user}/following')]").text.split()[0]
+            print(f"Number of following: {number_of_following}")
+        except Exception as e:
+            print(f"Error retrieving following count: {e}")
+            return []
+
+        driver.get(f"https://x.com/{user}/following")
+        following = []
+        last_height = driver.execute_script("return document.body.scrollHeight")
+
+        while True:
+            try:
+                WebDriverWait(driver, 10).until(
+                    EC.visibility_of_all_elements_located((By.XPATH, "//span[starts-with(text(), '@')]"))
+                )
+                current_following = [elem.text for elem in driver.find_elements(By.XPATH, "//span[starts-with(text(), '@')]")]
+                new_following = [f for f in current_following if f not in following]
+
+                if not new_following:
+                    # Scroll down to the bottom of the page
+                    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                    time.sleep(2)
+                    new_height = driver.execute_script("return document.body.scrollHeight")
+                    if new_height == last_height:
+                        break
+                    last_height = new_height
+                else:
+                    following.extend(new_following)
+                    print(f"Added {len(new_following)} new following.")
+                    if len(following) >= int(number_of_following.replace(',', '')):
+                        break
+            except StaleElementReferenceException:
+                print("Encountered a stale element, retrying...")
+                time.sleep(1)
+            except Exception as e:
+                print(f"Error during scrolling/loading: {e}")
+                break
+
+        return following
+                

@@ -1,2 +1,5 @@
 # gitignore
 test.py
+test.ipynb
+# txt files
+*.txt
