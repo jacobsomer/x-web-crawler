@@ -95,6 +95,44 @@ class XAgent:
                 time.sleep(2)
             except Exception as e:
                 print(f"Error unfollowing user {user}: {e}")
+                
+    def unfollow_users_alternative(self, user, users):
+        self.driver.get(f"https://x.com/{user}/following")
+        unfollowed = []
+        last_height = self.driver.execute_script("return document.body.scrollHeight")
+
+        while True:
+            try:
+                WebDriverWait(self.driver, 10).until(
+                    EC.visibility_of_all_elements_located((By.XPATH, "//button[contains(@data-testid, 'UserCell')]"))
+                )
+                current_following = {}
+                for elem in self.driver.find_elements(By.XPATH, "//button[contains(@data-testid, 'UserCell')]"):
+                    try:
+                        username = elem.find_element(By.XPATH, ".//span[starts-with(text(), '@')]").text
+                        unfollow_button = elem.find_element(By.XPATH, f".//button[contains(@aria-label, 'Following {username}')]")
+                        current_following[username] = unfollow_button
+                    except Exception as e:
+                        print(f"Error getting following: {e}")
+                users_to_unfollow = {f: current_following[f] for f in current_following if f in users}
+                if not users_to_unfollow:
+                    # Scroll down to the bottom of the page
+                    self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                    time.sleep(2)
+                    new_height = self.driver.execute_script("return document.body.scrollHeight")
+                    if new_height == last_height:
+                        break
+                    last_height = new_height
+                else:
+                    for key in users_to_unfollow:
+                        users_to_unfollow[key].click()
+                        time.sleep(2)
+                        unfollowed.append(key)
+            except StaleElementReferenceException:
+                print("Encountered a stale element, retrying...")
+                time.sleep(1)
+                    
+            
     
     def get_followers(self, user):
         time.sleep(2)

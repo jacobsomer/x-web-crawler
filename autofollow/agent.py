@@ -62,6 +62,10 @@ class AutoFollowAgent:
     def unfollow_x_users(self, users):
         self.x_agent.unfollow_users(users)
         self.close()
+    
+    def unfollow_x_users_alternatively(self, user, users):
+        self.x_agent.unfollow_users_alternatively(user, users)
+        self.close()
         
     def follow_x_users(self, users, duration=300):
         self.x_agent.follow_users(users, duration)
