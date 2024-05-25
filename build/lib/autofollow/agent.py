@@ -13,7 +13,7 @@ class AutoFollowAgent:
         self.browser = browser
         self.driver = self.create_driver()
         self.x_agent = XAgent(self.driver)
-
+        
     def set_common_options(self, options):
         if self.profile_path:
             options.add_argument(f"user-data-dir={self.profile_path}")
@@ -50,25 +50,31 @@ class AutoFollowAgent:
     The like_tweets method will like tweets on the user's feed for a specified amount of time.
     """
     def like_tweets(self, duration=300):
-        self.x_agent.like_tweets_on_feed(self.driver, duration)
+        self.x_agent.like_tweets_on_feed(duration)
         self.close()
     
     def get_x_followers(self, username):
-        return self.x_agent.get_followers(self.driver, username)
+        return self.x_agent.get_followers(username)
     
     def get_x_following(self, username):
-        return self.x_agent.get_following(self.driver, username)
+        return self.x_agent.get_following(username)
+    
+    def unfollow_x_users(self, users):
+        self.x_agent.unfollow_users(users)
+        self.close()
+        
+    def follow_x_users(self, users, duration=300):
+        self.x_agent.follow_users(users, duration)
+        self.close()
+        
+    def get_x_handles(self, query, num_handles=10):
+        return self.x_agent.get_handles(query, num_handles)
         
     def follow_github_users(self, url, page_number=0, duration=300):
         if not self.github_username or not self.github_password:
             raise ValueError("GitHub username and password must be provided to follow users.")
-        github.follow_users(self.driver, page_number, url, (self.github_username, self.github_password), duration)
+        github.follow_users(page_number, url, (self.github_username, self.github_password), duration)
         self.close()
-        
-    def follow_x_users(self, users, duration=300):
-        self.x_agent.follow_users(self.driver, users, duration)
-        self.close()
-        
 
     def close(self):
         self.driver.quit()

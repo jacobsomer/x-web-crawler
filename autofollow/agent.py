@@ -58,17 +58,23 @@ class AutoFollowAgent:
     
     def get_x_following(self, username):
         return self.x_agent.get_following(username)
-        
-    def follow_github_users(self, url, page_number=0, duration=300):
-        if not self.github_username or not self.github_password:
-            raise ValueError("GitHub username and password must be provided to follow users.")
-        github.follow_users(page_number, url, (self.github_username, self.github_password), duration)
+    
+    def unfollow_x_users(self, users):
+        self.x_agent.unfollow_users(users)
         self.close()
         
     def follow_x_users(self, users, duration=300):
         self.x_agent.follow_users(users, duration)
         self.close()
         
+    def get_x_handles(self, query, num_handles=10):
+        return self.x_agent.get_handles(query, num_handles)
+        
+    def follow_github_users(self, url, page_number=0, duration=300):
+        if not self.github_username or not self.github_password:
+            raise ValueError("GitHub username and password must be provided to follow users.")
+        github.follow_users(page_number, url, (self.github_username, self.github_password), duration)
+        self.close()
 
     def close(self):
         self.driver.quit()
