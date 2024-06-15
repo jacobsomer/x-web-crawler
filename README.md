@@ -1,44 +1,40 @@
-# autofollow
 
-autofollow is a Python package for automating interactions on social media platforms like Twitter (X) and GitHub.
+# x-web-crawler
+
+x-web-crawler is a Python package for automating interactions on social media platforms like Twitter (X) and GitHub.
 
 ## Installation
 
-You can install autofollow using [pip](https://pypi.org/project/autofollow/):
+You can install x-web-crawler using [pip](https://pypi.org/project/x-web-crawler/):
 
 ```bash
-pip install autofollow
+pip install x-web-crawler
 ```
 
 ## Usage
 
-Here’s an example of how to use autofollow to automate actions on Twitter (X) and GitHub:
+Here’s an example of how to use x-web-crawler to automate actions on Twitter (X) and GitHub:
 
 ```python
-from autofollow.agent import autofollowAgent
+from xagent import XAgent
 
 def main():
     driver_path = "YOUR_DRIVER_PATH"
     profile_path = "YOUR_PROFILE_PATH"
-    twitter_username = "YOUR_TWITTER_USERNAME"
+    twitter_username = "YOUR_TWITTER_USERNAME" # works best with your twitter handle and not email
     twitter_password = "YOUR_TWITTER_PASSWORD"
-    github_username = "YOUR_GITHUB_USERNAME"
-    github_password = "YOUR_GITHUB_PASSWORD"
     url = "https://github.com/orgs/Azure/people"
 
-    agent = autofollowAgent(
+    agent = XAgent(
         driver_path=driver_path,
         profile_path=profile_path,
-        twitter_username=twitter_username,
-        twitter_password=twitter_password,
-        github_username=github_username,
-        github_password=github_password
+        x_username=twitter_username,
+        x_password=twitter_password,
     )
 
     try:
-        agent.like_tweets(duration=300)
-        agent.follow_twitter_users(["https://x.com/jacob_somer_"], duration=300)
-        agent.follow_github_users(url, page_number=0, duration=300)
+        agent.like_x_posts(duration=300)
+        agent.follow_x_users(["https://x.com/jacob_somer_"], duration=300)
     finally:
         agent.close()
 
@@ -46,28 +42,45 @@ if __name__ == "__main__":
     main()
 ```
 
-### autofollowAgent Methods
+### XAgent Methods
 
-#### `__init__(self, driver_path, profile_path, github_username=None, github_password=None)`
+#### `__init__(self, driver_path, profile_path, x_username=None, x_password=None, browser="chrome")`
 
-Initializes the autofollowAgent.
+Initializes the XAgent.
 
 - `driver_path`: Path to the ChromeDriver executable. Download ChromeDriver from [here](https://googlechromelabs.github.io/chrome-for-testing/).
 - `profile_path`: Path to the user profile directory for Chrome. To find this, type "chrome://version" into your Chrome browser's address bar, and look for the "Profile Path" variable.
-- `github_username` (optional): GitHub username for authentication.
-- `github_password` (optional): GitHub password for authentication.
+- `x_username` (optional): Twitter (X) username for authentication.
+- `x_password` (optional): Twitter (X) password for authentication.
+- `browser`: The browser to use, either "chrome" or "edge".
 
-#### `like_tweets(duration=300)`
+#### `like_x_posts(duration=300)`
 
-Likes tweets on the user's feed for the specified duration.
+Likes posts on the user's feed for the specified duration.
 
-#### `follow_twitter_users(users, duration=300)`
+#### `follow_x_users(users, duration=300)`
 
 Follows the specified Twitter (X) users for the specified duration.
 
-#### `follow_github_users(url, page_number=0, duration=300)`
+#### `get_x_followers(username)`
 
-Follows users on GitHub starting from the specified page number for the specified duration.
+Gets the followers of a specified Twitter (X) user.
+
+#### `get_x_following(username)`
+
+Gets the users that a specified Twitter (X) user is following.
+
+#### `unfollow_x_users(users)`
+
+Unfollows the specified Twitter (X) users.
+
+#### `unfollow_x_users_alternative(user, users)`
+
+Unfollows the specified Twitter (X) users using an alternative method.
+
+#### `get_x_handles(query, num_handles=10)`
+
+Gets the handles of users based on a query.
 
 ### Running Tests
 
