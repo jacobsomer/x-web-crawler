@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='autofollow',
+    name='x-web-crawler',
     version='0.1.2',
     packages=find_packages(),
     install_requires=[
@@ -15,7 +15,7 @@ setup(
     },
     author='Jacob Somer',
     author_email='somerjacob@gmail.com',
-    description='A package for automating interactions on social media platforms like x and GitHub',
+    description='A web crawler for x.com',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     url='https://github.com/jacobsomer/autofollow',

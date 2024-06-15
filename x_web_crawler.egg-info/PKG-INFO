@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
-Name: autofollow
+Name: x-web-crawler
 Version: 0.1.2
-Summary: A package for automating interactions on social media platforms like x and GitHub
+Summary: A web crawler for x.com
 Home-page: https://github.com/jacobsomer/autofollow
 Author: Jacob Somer
 Author-email: somerjacob@gmail.com
