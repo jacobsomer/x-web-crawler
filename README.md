@@ -23,7 +23,6 @@ def main():
     profile_path = "YOUR_PROFILE_PATH"
     twitter_username = "YOUR_TWITTER_USERNAME" # works best with your twitter handle and not email
     twitter_password = "YOUR_TWITTER_PASSWORD"
-    url = "https://github.com/orgs/Azure/people"
 
     agent = XAgent(
         driver_path=driver_path,
