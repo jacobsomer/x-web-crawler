@@ -80,8 +80,8 @@ To automate actions using the Edge browser, modify the driver and profile paths:
 ```python
 from xagent.agent import XAgent
 
-edge_driver_path = "/Users/jacobsomer/Documents/side_prod/salesBook/edgedriver_mac64_m1 (1)/msedgedriver"
-edge_profile_path = "/Users/jacobsomer/Library/Application Support/Microsoft Edge/User Data"
+edge_driver_path = "/Users/<username>/edgedriver_mac64_m1/msedgedriver"
+edge_profile_path = "/Users/<username>/Library/Application Support/Microsoft Edge/User Data"
 
 agent = XAgent(
     driver_path=edge_driver_path, 
