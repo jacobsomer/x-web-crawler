@@ -21,7 +21,7 @@ from xagent import XAgent
 def main():
     driver_path = "YOUR_DRIVER_PATH"
     profile_path = "YOUR_PROFILE_PATH"
-    twitter_username = "YOUR_TWITTER_USERNAME" # works best with your twitter handle and not email
+    twitter_username = "YOUR_TWITTER_USERNAME" # works best with your X handle and not email
     twitter_password = "YOUR_TWITTER_PASSWORD"
 
     agent = XAgent(
