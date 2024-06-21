@@ -1,7 +1,7 @@
 
 # 🚀 x-web-crawler
 
-x-web-crawler is a Python package for automating interactions on social media platforms like Twitter (X) and GitHub.
+x-web-crawler is a Python package for automating interactions on X.
 
 ## Installation
 
