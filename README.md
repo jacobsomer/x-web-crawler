@@ -50,8 +50,8 @@ Here's how to automate actions on Twitter (X) using the Chrome browser:
 ```python
 from xagent import XAgent
 
-driver_path = "/Users/jacobsomer/Documents/side_prod/salesBook/chromedriver-mac-arm64/chromedriver"
-profile_path = "/Users/jacobsomer/Library/Application Support/Google/Chrome/chromeProfile"
+driver_path = "DRIVER_PATH"
+profile_path = "PROFILE_PATH"
 x_username = "YOUR_TWITTER_USERNAME"
 x_password = "YOUR_TWITTER_PASSWORD"
 
